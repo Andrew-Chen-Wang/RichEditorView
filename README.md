@@ -22,13 +22,21 @@ The following assumes you have a property `let editorView = RichEditorView()`
 
 1. You can get selected text by doing `editorView.getSelectedText`
 2. runJS and other functions in the RichEditorView does NOT work like cjwirth's. This is due to the JavaScript bridging for WKWebView; unlike WK, UIWebView had a string be returned. In order to run JavaScript and other functionalities return `Void`, you must do the following:
-```editorView.getSelectedText() { r in
+```
+editorView.getSelectedText() { r in
     // r is just a variable.
 }
 ```
+or 
+```
+editorView.runJS("document.getElementById('editor')") { r in 
+    print(r)
+}
+```
+**NOTE That these might run asynchronously. This might be due to WKWebView's memory efficiency feature. Don't quote me on that though, since I'm not too sure if that's true. Just an observation.**
 This is because the function is: `public func getSelectedText(handler: @escaping (String) -> Void)`. Notice the `(String) -> Void`. The variable `r` is the string value returned by JavaScript.
 
-3. The insertLink functionality has also changed. Normal <a> tags in HTML are layed out like this: `<a href="https://google.com" title="Google">The TEXT that user sees</a>`. When you insert a link, the following arguments are required: href and text. **If there is a range selection, the text in the range selection will be cleared!**
+3. The insertLink functionality has also changed. Normal <a> tags in HTML are layed out like this: `<a href="https://github.com/" title="GitHub">The TEXT that user sees</a>`. When you insert a link, the following arguments are required: href and text. **If there is a range selection, the text in the range selection will be cleared!**
 4. Dark mode is included via the CSS and HTML files.
 
 ---
