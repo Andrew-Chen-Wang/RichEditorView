@@ -43,6 +43,14 @@ RE.rangeOrCaretSelectionExists = function() {
     return false;
 };
 
+// Returns selected text range
+RE.selectedText = function() {
+    if (RE.rangeSelectionExists() == true) {
+        return document.getSelection().toString();
+    }
+    return "";
+};
+
 RE.editor.addEventListener("input", function() {
     RE.updatePlaceholder();
     RE.backuprange();
@@ -74,7 +82,6 @@ RE.runCallbackQueue = function() {
 
     setTimeout(function() {
         window.location.href = "re-callback://";
-        //window.webkit.messageHandlers.iOS_Native_FlushMessageQueue.postMessage("re-callback://")
     }, 0);
 };
 
@@ -247,41 +254,22 @@ RE.insertHTML = function(html) {
     document.execCommand('insertHTML', false, html);
 };
 
-RE.insertLink = function(url, title) {
-    RE.restorerange();
+RE.insertLink = function(url, text, title) {
+    var selected = RE.selectedText();
+    if (selected.length !== 0) {
+        selected = "";
+    } // I use a UIAlertController to insert links and text. I auto-fill the "text" part of my UIA.C. by first selecting the text before I use this function.
+    
     var el = document.createElement("a");
     el.setAttribute("href", url);
-    var text = document.createTextNode(title);
-    el.appendChild(text);
-    
-    var sel, range;
-    sel = document.getSelection();
-    if (sel.rangeCount) {
-        range = sel.getRangeAt(0);
-        range.deleteContents();
-    }
-    
+    el.setAttribute("title", title);
+    var textnode = document.createTextNode(text);
+    el.appendChild(textnode);
+
     RE.insertHTML(el.outerHTML);
     RE.callback("input");
 };
-/*
-RE.insertLink = function(url, title) {
-    RE.restorerange();
-    var sel = document.getSelection();
-    if (sel.toString().length !== 0) {
-        if (sel.rangeCount) {
-            var el = document.createElement("a");
-            el.setAttribute("href", url);
-            //el.setAttribute("title", title);
-            var range = sel.getRangeAt(0).cloneRange();
-            range.surroundContents(el);
-            sel.removeAllRanges();
-            sel.addRange(range);
-        }
-    }
-    RE.callback("input");
-};
-*/
+
 RE.prepareInsert = function() {
     RE.backuprange();
 };
@@ -402,7 +390,6 @@ RE.getSelectedHref = function() {
         var node = _findNodeByNameInContainer(sel.anchorNode.parentElement, 'A', 'editor');
         href = node.href;
     }
-
     return href ? href : null;
 };
 
@@ -429,8 +416,6 @@ RE.getRelativeCaretYPosition = function() {
     }
     return y;
 };
-
-// Inserts text at cursor https://github.com/cjwirth/RichEditorView/issues/74
 
 window.onload = function() {
     RE.callback("ready");

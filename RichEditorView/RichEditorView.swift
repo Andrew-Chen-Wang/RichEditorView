@@ -8,14 +8,6 @@
 import UIKit
 import WebKit
 
-public class RichEditorWebView: WKWebView {
-    public var accessoryView: UIView?
-    
-    public override var inputAccessoryView: UIView? {
-        return accessoryView
-    }
-}
-
 /// RichEditorDelegate defines callbacks for the delegate of the RichEditorView
 @objc public protocol RichEditorDelegate: class {
     /// Called when the inner height of the text being displayed changes
@@ -46,6 +38,13 @@ public class RichEditorWebView: WKWebView {
 
 /// The value we hold in order to be able to set the line height before the JS completely loads.
 private let DefaultInnerLineHeight: Int = 28
+
+public class RichEditorWebView: WKWebView {
+    public var accessoryView: UIView?
+    public override var inputAccessoryView: UIView? {
+        return accessoryView
+    }
+}
 
 /// RichEditorView is a UIView that displays richly styled text, and allows it to be edited in a WYSIWYG fashion.
 @objcMembers open class RichEditorView: UIView, UIScrollViewDelegate, WKNavigationDelegate, UIGestureRecognizerDelegate {
@@ -217,19 +216,20 @@ private let DefaultInnerLineHeight: Int = 28
         }
     }
     
+    /// Returns selected text
+    public func getSelectedText(handler: @escaping (String?) -> Void) {
+        self.runJS("RE.selectedText()") { r in handler(r) }
+    }
+    
     /// The href of the current selection, if the current selection's parent is an anchor tag.
     /// Will be nil if there is no href, or it is an empty string.
     public func getSelectedHref(handler: @escaping (String?) -> Void) {
         hasRangeSelection(handler: { r in
             if !r {
-                handler(nil)
-                return
-            }
-            self.runJS("RE.getSelectedHref()") { r in
-                if r == "" {
-                    handler(nil)
-                } else {
-                    handler(r)
+                handler("")
+            } else {
+                self.runJS("RE.getSelectedHref()") { a in
+                    handler(a)
                 }
             }
         })
@@ -350,9 +350,9 @@ private let DefaultInnerLineHeight: Int = 28
         runJS("RE.insertImage('\(url.escaped)', '\(alt.escaped)')")
     }
     
-    public func insertLink(_ href: String, title: String) {
+    public func insertLink(href: String, text: String, title: String = "") {
         runJS("RE.prepareInsert()")
-        runJS("RE.insertLink('\(href.escaped)', '\(title.escaped)')")
+        runJS("RE.insertLink('\(href.escaped)', '\(text.escaped)', '\(title.escaped)')")
     }
     
     public func focus() {
@@ -440,7 +440,6 @@ private let DefaultInnerLineHeight: Int = 28
                 }
             }
         }
-        
         return decisionHandler(WKNavigationActionPolicy.allow);
     }
     
