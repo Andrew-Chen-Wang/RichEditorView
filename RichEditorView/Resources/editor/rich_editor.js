@@ -215,6 +215,30 @@ RE.setUnorderedList = function() {
     document.execCommand('insertUnorderedList', false, null);
 };
 
+function createCheckbox(id) {
+    var el = document.querySelector("input[name='" + id + "']");
+    var d = document.createElement("input");
+    d.setAttribute("type", "checkbox");
+    d.setAttribute("name", id);
+    if(el.checked) {
+        d.setAttribute("checked", null);
+    }
+    el.parentNode.insertBefore(d, el);
+    el.parentNode.removeChild(el);
+    el = document.querySelector("input[name='" + id + "']");
+    el.addEventListener("change", function() {createCheckbox(id);});
+};
+
+RE.setCheckbox = function(id) {
+    var el = document.createElement("input");
+    el.setAttribute("type", "checkbox");
+    el.setAttribute("name", id);
+    RE.insertHTML("&nbsp;" + el.outerHTML + "&nbsp;");
+    el = document.querySelector("input[name='" + id + "']");
+    el.addEventListener("change", function() {createCheckbox(id);});
+    RE.callback("input");
+};
+
 RE.setJustifyLeft = function() {
     document.execCommand('justifyLeft', false, null);
 };
