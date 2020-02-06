@@ -18,6 +18,10 @@ No unit testing is included here. You can find it in cjwirth/RichEditorView
 
 Most features are the same from the parent repo, but I have added some other functionalities and some directions in the sample. Other features can be found in cjwirth's repo.
 
+- Checkbox (need to add image)
+- Offline & Server-based Image and Video upload
+- TODO Not done: Tables (need to add image)
+
 The following assumes you have a property `let editorView = RichEditorView()`
 
 1. You can get selected text by doing `editorView.getSelectedText`
@@ -50,10 +54,18 @@ This is because the function is: `public func getSelectedText(handler: @escaping
 
 ---
 
+### Extra Notes
+
+- Up to iOS 13.3 (current), there is still no fix to `[Process] kill() returned unexpected error 1`. Well, there technically is, but Apple won't release it. Check out the SO conversation here: https://stackoverflow.com/questions/58321114/why-i-get-the-console-warning-process-kill-returned-unexpected-error-1-when
+
+---
+
 ### Credits and License
 
 License is under BSD-3 Clause
 
 cjwirth - Original iOS-RichEditorView Creator
+
 C. Bess - WKWebView Support
+
 YoomamaFTW - Repository Maintainer

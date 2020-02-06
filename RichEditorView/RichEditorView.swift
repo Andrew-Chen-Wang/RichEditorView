@@ -148,6 +148,7 @@ public class RichEditorWebView: WKWebView {
         webView.configuration.dataDetectorTypes = WKDataDetectorTypes()
         
         webView.scrollView.isScrollEnabled = isScrollEnabled
+        webView.scrollView.showsHorizontalScrollIndicator = false
         webView.scrollView.bounces = false
         webView.scrollView.delegate = self
         webView.scrollView.clipsToBounds = false

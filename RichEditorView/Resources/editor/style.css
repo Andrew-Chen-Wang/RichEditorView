@@ -67,3 +67,8 @@ div {
     display: block;
     font-size: 12pt;
 }
+
+input[type=checkbox] {
+    transform: scale(1.4);
+    margin-right: 9px;
+}
