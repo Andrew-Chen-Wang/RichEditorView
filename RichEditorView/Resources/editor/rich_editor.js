@@ -279,19 +279,21 @@ RE.insertHTML = function(html) {
 };
 
 RE.insertLink = function(url, text, title) {
-    var selected = RE.selectedText();
-    if (selected.length !== 0) {
-        selected = "";
-    } // I use a UIAlertController to insert links and text. I auto-fill the "text" part of my UIA.C. by first selecting the text before I use this function.
-    
-    var el = document.createElement("a");
-    el.setAttribute("href", url);
-    el.setAttribute("title", title);
-    var textnode = document.createTextNode(text);
-    el.appendChild(textnode);
+    RE.restorerange();
+    var sel = document.getSelection();
+    if (sel.toString().length == 0) {
+        document.execCommand("insertHTML",false,"<a href='"+url+"' title='"+title+"'>"+text+"</a>");
+    } else if (sel.rangeCount) {
+        var el = document.createElement("a");
+        el.setAttribute("href", url);
+        el.setAttribute("title", title);
 
-    RE.insertHTML(el.outerHTML);
-    RE.callback("input");
+        var range = sel.getRangeAt(0).cloneRange();
+        range.surroundContents(el);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+    RE.callback();
 };
 
 RE.prepareInsert = function() {
