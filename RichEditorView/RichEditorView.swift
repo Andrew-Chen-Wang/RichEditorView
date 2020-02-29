@@ -350,6 +350,22 @@ public class RichEditorWebView: WKWebView {
         runJS("RE.prepareInsert()")
         runJS("RE.insertImage('\(url.escaped)', '\(alt.escaped)')")
     }
+
+    public func insertVideo(video: String, isBase64: Bool=false) {
+            // Remember, both poster and src can be base64 encoded
+            runJS("RE.prepareInsert()")
+            var theJS: String
+            if offline == true {
+                // Assuming vidURL already in base64
+                theJS = "<div><video class='video-js' controls preload='auto'  data-setup='{}'><source src='\(vidURL)'></source></video></div>"
+            } else {
+                // Upload to server the base64 if isBase64 == true. Utilize the IDs and Video tags to your advantage. On Python web server, I use BeautifulSoup4. Use the base64 to save video in S3 and replace src with your new S3 video. Or you could just save in database.
+                let uuid = UUID().uuidString
+                theJS = "<div><video \(isBase64 ? "id='"+uuid+"'":"") class='video-js' controls preload='auto' data-setup='{}'><source src='\(video)\(isBase64 ? "":"#t=0.01")'></source></video></div>"
+                // The time at the end is so that we can grab a thumbnail IF it's a link
+            }
+            runJS("RE.insertHTML('\(theJS.escaped)')")
+        }
     
     public func insertLink(href: String, text: String, title: String = "") {
         runJS("RE.prepareInsert()")
