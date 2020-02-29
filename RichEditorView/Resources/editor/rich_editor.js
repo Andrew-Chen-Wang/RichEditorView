@@ -360,6 +360,66 @@ RE.blurFocus = function() {
     RE.editor.blur();
 };
 
+// User editing table functionality
+RE.insertTable = function(width, height) {
+    var table = document.createElement("table");
+    for (let i = 0; i < height; i++) {
+        var row = table.insertRow();
+        for (let j = 0; j < width; j++) {
+            var cell = row.insertCell();
+        }
+    }
+
+    RE.insertHTML(table.outerHTML);
+    RE.callback("input");
+};
+
+function getNearestTableAncestor(htmlElementNode) {
+    while (htmlElementNode) {
+        htmlElementNode = htmlElementNode.parentNode;
+        if (htmlElementNode.tagName.toLowerCase() === 'table') {
+            return htmlElementNode;
+        }
+    }
+    return undefined;
+}
+
+RE.isCursorInTable = function() {
+    return document.querySelectorAll(":hover")[elements.length - 1] instanceof HTMLTableCellElement  
+};
+
+RE.addRowToTable = function() {
+    // Add row below current cursor's
+    var elements = document.querySelectorAll(":hover");
+    let rowIndex = elements[elements.length - 2].rowIndex;
+    let table = getNearestTableAncestor(elements[elements.length - 1]);
+    table.insertRow(rowIndex + 1);
+};
+
+RE.deleteRowFromTable = function() {
+    // Deletes the current cursor's row
+    var elements = document.querySelectorAll(":hover");
+    let rowIndex = elements[elements.length - 2].rowIndex;
+    let table = getNearestTableAncestor(elements[elements.length - 1]);
+    table.deleteRow(rowIndex);
+};
+
+RE.addColumnToTable = function() {
+    // Add column to the right of current cursor's
+    var elements = document.querySelectorAll(":hover");
+    let columnIndex = elements[elements.length - 1].cellIndex;
+    let row = elements[elements.length - 2];
+    row.insertCell(columnIndex + 1);
+}
+
+RE.deleteColumnFromTable = function() {
+    // Deletes the current cursor's column
+    var elements = document.querySelectorAll(":hover");
+    let columnIndex = elements[elements.length - 1].cellIndex;
+    let row = elements[elements.length - 2];
+    row.deleteCell(columnIndex);
+};
+
 /**
 Recursively search element ancestors to find a element nodeName e.g. A
 **/

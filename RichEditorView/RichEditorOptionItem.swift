@@ -75,6 +75,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
     case image
     case video
     case link
+    case table
     
     public static let all: [RichEditorDefaultOption] = [
         //.clear,
@@ -84,7 +85,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         .textColor, .textBackgroundColor,
         .header(1), .header(2), .header(3), .header(4), .header(5), .header(6),
         .indent, outdent, orderedList, unorderedList,
-        .alignLeft, .alignCenter, .alignRight, .image, .video, .link
+        .alignLeft, .alignCenter, .alignRight, .image, .video, .link, .table
     ]
 
     // MARK: RichEditorOption
@@ -114,6 +115,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .image: name = "insert_image"
         case .video: name = "insert_video"
         case .link: name = "insert_link"
+        case .table: name = "insert_table"
         }
         
         let bundle = Bundle(for: RichEditorToolbar.self)
@@ -145,6 +147,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .image: return NSLocalizedString("Image", comment: "")
         case .video: return NSLocalizedString("Video", comment: "")
         case .link: return NSLocalizedString("Link", comment: "")
+        case .table return NSLocalizedString("Table", comment: "")
         }
     }
     
@@ -173,6 +176,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .image: toolbar.delegate?.richEditorToolbarInsertImage?(toolbar)
         case .video: toolbar.delegate?.richEditorToolbarInsertVideo?(toolbar)
         case .link: toolbar.delegate?.richEditorToolbarInsertLink?(toolbar)
+        case .table: toolbar.delegate?.richEditorToolbarInsertTable?(toolbar)
         }
     }
 }
