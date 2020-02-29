@@ -1,6 +1,6 @@
 # RichEditorView
 
-This is the Swift 5 version of [cjwirth/RichEditorView](https://github.com/cjwirth/RichEditorView) using WKWebView that includes several new functionalities.
+This is the Swift 5 version of [cjwirth/RichEditorView](https://github.com/cjwirth/RichEditorView) using WKWebView that **added several** awesome functionalities.
 
 Table of Contents:
 - Usage Instructions
@@ -27,9 +27,9 @@ Most features are the same from the [parent repo](https://github.com/cjwirth/Ric
 
 - Checkbox
 - Offline & Server-based Image and Video functionality
-- TODO Not done: Tables (need to add image)
+- Tables ([with editing functionality](https://github.com/YoomamaFTW/RichEditorView/pull/5#issuecomment-592952190))
 
-The following assumes you have a property `let editorView = RichEditorView()`
+The following edited features assumes you have a property `let editorView = RichEditorView()`
 
 1. You can get selected text by doing `editorView.getSelectedText`
 2. runJS and other functions in the RichEditorView does NOT work like cjwirth's. This is due to the JavaScript bridging for WKWebView; unlike WK, UIWebView had a string be returned. In order to run JavaScript and other functionalities return `Void`, you must do the following:
