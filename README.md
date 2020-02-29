@@ -1,6 +1,13 @@
 # RichEditorView
 
-This is the Swift 5 version of [cjwirth/RichEditorView](https://github.com/cjwirth/RichEditorView) using WKWebView. 
+This is the Swift 5 version of [cjwirth/RichEditorView](https://github.com/cjwirth/RichEditorView) using WKWebView that includes several new functionalities.
+
+Table of Contents:
+- Usage Instructions
+- Added Features
+- TODO
+- Extra Notes
+- Credits and License
 
 -------
 
@@ -14,12 +21,12 @@ No unit testing is included here. You can find it in cjwirth/RichEditorView
 
 ---
 
-### Features:
+### Added Features:
 
-Most features are the same from the parent repo, but I have added some other functionalities and some directions in the sample. Other features can be found in cjwirth's repo.
+Most features are the same from the [parent repo](https://github.com/cjwirth/RichEditorView), but I have added some other functionalities and some directions in the sample. Other features can be found in cjwirth's repo.
 
-- Checkbox (need to add image)
-- Offline & Server-based Image and Video upload
+- Checkbox
+- Offline & Server-based Image and Video functionality
 - TODO Not done: Tables (need to add image)
 
 The following assumes you have a property `let editorView = RichEditorView()`
