@@ -20,9 +20,79 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: RichEditorDelgate {}
+extension ViewController: RichEditorDelgate {
+    func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
+        // This is meant to act as a text cap
+        if content.count > 40000 {
+            editor.html = prevText
+        } else {
+            prevText = content
+        }
+    }
+}
 
 extension ViewController: RichEditorToolbarDelgate {
+    func richEditorToolbarInsertLink(_ toolbar: RichEditorToolbar) {
+        let alertController = UIAlertController(title: "Enter link and text", message: "You can leave the text empty to only show a clickable link", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "Insert", style: .default) { (_) in
+            var link = alertController.textFields?[0].text
+            let text = alertController.textFields?[1].text
+            if link?.last != "/" { link = link! + "/" }
+            toolbar.editor?.insertLink(href: link!, text: text ?? link!)
+            self.editorView.focus()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+        confirmAction.isEnabled = false
+        let linkPH = "Link (required)"
+        let txtPH = "Text (Clickable text that redirects to link)"
+        toolbar.editor?.hasRangeSelection(handler: { r in
+            if r == true {
+                alertController.addTextField { (textField) in
+                    textField.placeholder = linkPH
+                    toolbar.editor?.getSelectedHref(handler: { a in
+                        if a?.last != "/" {
+                            textField.text = nil
+                        } else {
+                            if self.isURLValid(url: a) == true {
+                                textField.text = a
+                            }
+                        }
+                    })
+                    NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main) { (notification) in
+                        if self.isURLValid(url: textField.text) == true {
+                            confirmAction.isEnabled = textField.hasText
+                        } else {
+                            confirmAction.isEnabled = false
+                        }
+                    }
+                }
+                alertController.addTextField { (textField) in
+                    textField.placeholder = txtPH
+                    toolbar.editor?.getSelectedText(handler: { a in
+                        textField.text = a
+                    })
+                }
+            } else {
+                alertController.addTextField { (textField) in
+                    textField.placeholder = linkPH
+                    NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: OperationQueue.main) { (notification) in
+                        if self.isURLValid(url: textField.text) == true {
+                            confirmAction.isEnabled = textField.hasText
+                        } else {
+                            confirmAction.isEnabled = false
+                        }
+                    }
+                }
+                alertController.addTextField { (textField) in textField.placeholder = txtPH }
+            }
+        })
+    }
+    
+    
+    /*
     // I'll first use getSelectedText and getSelectedHref functions to see if any selection has been made that we can autofill. Go to rich_editor.js for a deeper insight; be cautious since if there is a selection, then the selected text will be replaced.
     var selectedText: String!
     var selectedHref: String!
@@ -33,4 +103,5 @@ extension ViewController: RichEditorToolbarDelgate {
     // toolbar.editor?.insertLink(...) also works
     // If you use a UIAlertController, then you must add editorView.focus(). This is due to the cursor being transferred from the editor view to the new controller which fill outs the links
     // Remember this package is Google Docs style, not MarkDown or Reddit style like many other text editors.
+    */
 }
