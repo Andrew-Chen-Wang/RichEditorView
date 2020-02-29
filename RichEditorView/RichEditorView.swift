@@ -388,6 +388,11 @@ public class RichEditorWebView: WKWebView {
         runJS("RE.setCheckbox('\(UUID().uuidString.prefix(8))')")
     }
     
+    public func insertTable(width: Int = 2, height: Int = 2) {
+        runJS("RE.prepareInsert()")
+        runJS("RE.insertTable(\(width), \(height))")
+    }
+    
     /// Runs some JavaScript on the WKWebView and returns the result
     /// If there is no result, returns an empty string
     /// - parameter js: The JavaScript string to be run

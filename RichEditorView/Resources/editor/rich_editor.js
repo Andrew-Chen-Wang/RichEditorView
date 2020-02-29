@@ -360,6 +360,28 @@ RE.blurFocus = function() {
     RE.editor.blur();
 };
 
+// User editing table functionality
+RE.insertTable = function(width, height) {
+    var table = document.createElement("table");
+    for (let i = 0; i < height; i++) {
+        var row = table.insertRow();
+        for (let j = 0; j < width; j++) {
+            var cell = row.insertCell();
+        }
+    }
+
+    RE.insertHTML(table.outerHTML);
+    RE.callback("input");
+};
+
+RE.addRowToTable = function(rowIndex) {
+    // Add row below current
+};
+
+RE.addColumnToTable = function(columnIndex) {
+    // Add column to the right of current
+}
+
 /**
 Recursively search element ancestors to find a element nodeName e.g. A
 **/
