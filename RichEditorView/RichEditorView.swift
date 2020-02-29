@@ -388,10 +388,24 @@ public class RichEditorWebView: WKWebView {
         runJS("RE.setCheckbox('\(UUID().uuidString.prefix(8))')")
     }
     
+    // MARK: Table functionalities
     public func insertTable(width: Int = 2, height: Int = 2) {
         runJS("RE.prepareInsert()")
         runJS("RE.insertTable(\(width), \(height))")
     }
+    
+    /// Checks if cursor is in a table element. If so, return true so that you can add menu items accordingly.
+    public func isCursorInTable() {
+        runJS("RE.isCursorInTable") { r in
+            return r
+        }
+    }
+    
+    public func addRowToTable() { runJS("RE.addRowToTable()") }
+    public func deleteRowFromTable() { runJS("RE.deleteRowFromTable()") }
+    public func addRowToTable() { runJS("RE.addRowToTable()") }
+    public func deleteColumnFromTable() { runJS("RE.addRowToTable()") }
+    
     
     /// Runs some JavaScript on the WKWebView and returns the result
     /// If there is no result, returns an empty string

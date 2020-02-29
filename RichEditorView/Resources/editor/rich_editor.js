@@ -374,13 +374,51 @@ RE.insertTable = function(width, height) {
     RE.callback("input");
 };
 
-RE.addRowToTable = function(rowIndex) {
-    // Add row below current
+function getNearestTableAncestor(htmlElementNode) {
+    while (htmlElementNode) {
+        htmlElementNode = htmlElementNode.parentNode;
+        if (htmlElementNode.tagName.toLowerCase() === 'table') {
+            return htmlElementNode;
+        }
+    }
+    return undefined;
+}
+
+RE.isCursorInTable = function() {
+    return document.querySelectorAll(":hover")[elements.length - 1] instanceof HTMLTableCellElement  
 };
 
-RE.addColumnToTable = function(columnIndex) {
-    // Add column to the right of current
+RE.addRowToTable = function() {
+    // Add row below current cursor's
+    var elements = document.querySelectorAll(":hover");
+    let rowIndex = elements[elements.length - 2].rowIndex;
+    let table = getNearestTableAncestor(elements[elements.length - 1]);
+    table.insertRow(rowIndex + 1);
+};
+
+RE.deleteRowFromTable = function() {
+    // Deletes the current cursor's row
+    var elements = document.querySelectorAll(":hover");
+    let rowIndex = elements[elements.length - 2].rowIndex;
+    let table = getNearestTableAncestor(elements[elements.length - 1]);
+    table.deleteRow(rowIndex);
+};
+
+RE.addColumnToTable = function() {
+    // Add column to the right of current cursor's
+    var elements = document.querySelectorAll(":hover");
+    let columnIndex = elements[elements.length - 1].cellIndex;
+    let row = elements[elements.length - 2];
+    row.insertCell(columnIndex + 1);
 }
+
+RE.deleteColumnFromTable = function() {
+    // Deletes the current cursor's column
+    var elements = document.querySelectorAll(":hover");
+    let columnIndex = elements[elements.length - 1].cellIndex;
+    let row = elements[elements.length - 2];
+    row.deleteCell(columnIndex);
+};
 
 /**
 Recursively search element ancestors to find a element nodeName e.g. A
