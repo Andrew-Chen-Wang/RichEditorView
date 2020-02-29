@@ -19,6 +19,9 @@ import UIKit
     /// Called when the Insert Image toolbar item is pressed.
     @objc optional func richEditorToolbarInsertImage(_ toolbar: RichEditorToolbar)
 
+    /// Called when the Insert Video toolbar item is pressed
+    @objc optional func richEditorToolbarInsertVideo(_ toolbar: RichEditorToolbar)
+
     /// Called when the Insert Link toolbar item is pressed.
     @objc optional func richEditorToolbarInsertLink(_ toolbar: RichEditorToolbar)
 }
