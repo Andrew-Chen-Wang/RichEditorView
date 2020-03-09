@@ -147,7 +147,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .image: return NSLocalizedString("Image", comment: "")
         case .video: return NSLocalizedString("Video", comment: "")
         case .link: return NSLocalizedString("Link", comment: "")
-        case .table return NSLocalizedString("Table", comment: "")
+        case .table: return NSLocalizedString("Table", comment: "")
         }
     }
     
