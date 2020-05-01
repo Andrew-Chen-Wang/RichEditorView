@@ -6,7 +6,6 @@ Table of Contents:
 - Usage Instructions
 - Added Features
 - TODO
-- Extra Notes
 - Credits and License
 
 -------
@@ -58,12 +57,6 @@ This is because the function is: `public func getSelectedText(handler: @escaping
 - Find someone to maintain Pod and Carthage package
 - Separate iOS 12.X and iOS >13.X packages
 - Refactor toolbar for iOS 12.X
-
----
-
-### Extra Notes
-
-- Up to iOS 13.3 (current), there is still no fix to `[Process] kill() returned unexpected error 1`. Well, there technically is, but Apple won't release it. Check out the SO conversation here: https://stackoverflow.com/questions/58321114/why-i-get-the-console-warning-process-kill-returned-unexpected-error-1-when
 
 ---
 
