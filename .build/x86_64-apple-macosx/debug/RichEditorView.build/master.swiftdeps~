@@ -1,0 +1,10 @@
+version: "Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)"
+options: "f61112e2c9fe5edd1c506cf60069ba03"
+build_time: [1615565682, 143379000]
+inputs:
+  "/Users/andrewcwang/Work/Code/projects/iOS/RichEditorView/Sources/RichEditorView/RichEditorOptionItem.swift": [1615565299, 939970956]
+  "/Users/andrewcwang/Work/Code/projects/iOS/RichEditorView/Sources/RichEditorView/RichEditorToolbar.swift": [1615563798, 492015685]
+  "/Users/andrewcwang/Work/Code/projects/iOS/RichEditorView/Sources/RichEditorView/RichEditorView.swift": !dirty [1615565681, 325903286]
+  "/Users/andrewcwang/Work/Code/projects/iOS/RichEditorView/Sources/RichEditorView/String+Extensions.swift": [1615563798, 493331288]
+  "/Users/andrewcwang/Work/Code/projects/iOS/RichEditorView/Sources/RichEditorView/UIColor+Extensions.swift": [1615563798, 493587506]
+  "/Users/andrewcwang/Work/Code/projects/iOS/RichEditorView/.build/x86_64-apple-macosx/debug/RichEditorView.build/DerivedSources/resource_bundle_accessor.swift": [1615564920, 502154309]
