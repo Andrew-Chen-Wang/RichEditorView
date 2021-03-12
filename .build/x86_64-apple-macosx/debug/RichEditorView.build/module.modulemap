@@ -1,4 +1,0 @@
-module RichEditorView {
-    header "/Users/andrewcwang/Work/Code/projects/iOS/RichEditorView/.build/x86_64-apple-macosx/debug/RichEditorView.build/RichEditorView-Swift.h"
-    requires objc
-}
