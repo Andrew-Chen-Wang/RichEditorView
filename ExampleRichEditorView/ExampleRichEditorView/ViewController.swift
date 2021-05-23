@@ -1,4 +1,5 @@
 import UIKit
+import RichEditorView
 
 class ViewController: UIViewController {
     let editorView = RichEditorView()
@@ -6,21 +7,30 @@ class ViewController: UIViewController {
     let toolbar = RichEditorToolbar()
     
     override func viewDidLoad() {
-        super().viewDidLoad
-        additionalSafeAreaInsets = .init(top: 6, left: 12, right: 12, bottom: 0)
-        editorView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
-        editorView.center.x = view.center.x
+        super.viewDidLoad()
+        additionalSafeAreaInsets = .init(top: 6, left: 12, bottom: 0, right: 12)
+        editorView.translatesAutoresizingMaskIntoConstraints = false
         editorView.delegate = self
         editorView.editingEnabled = true
+        editorView.placeholder = "Press to start typing"
         toolbar.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 44)
         toolbar.options = RichEditorDefaultOption.all
-        editorView.placeholder = "Press to start typing"
-        editorView.inputAccessoryView = toolbarview.addSubview(editorView)
+        toolbar.editor = editorView
+        toolbar.delegate = self
+        editorView.inputAccessoryView = toolbar
+        view.addSubview(editorView)
+        let sa = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            editorView.topAnchor.constraint(equalTo: sa.topAnchor),
+            editorView.leadingAnchor.constraint(equalTo: sa.leadingAnchor),
+            editorView.trailingAnchor.constraint(equalTo: sa.trailingAnchor),
+            editorView.bottomAnchor.constraint(equalTo: sa.bottomAnchor)
+        ])
         editorView.html = "What I'll usually do for focus and unfocus is similar to what Google Docs does. The insert link functionality is similar to Reddit's except I use a UIAlertController. There are some added and altered functionality like running your custom JS; you will just have to learn what goes on with this package, but it's a quick learn. <b>Good luck!</b> If you have any issues, Yoom will help out, so long as those issues are opened in this repo. Credits still go out to cjwirth and C. Bess" // setting the html must come AFTER the subview has been added. I'm not sure why, though. This could also not be the case after I ported this over to WKWebView
     }
 }
 
-extension ViewController: RichEditorDelgate {
+extension ViewController: RichEditorDelegate {
     func richEditor(_ editor: RichEditorView, contentDidChange content: String) {
         // This is meant to act as a text cap
         if content.count > 40000 {
@@ -31,7 +41,12 @@ extension ViewController: RichEditorDelgate {
     }
 }
 
-extension ViewController: RichEditorToolbarDelgate {
+extension ViewController: RichEditorToolbarDelegate {
+    func isURLValid(url: String?) -> Bool {
+        if(url?.hasPrefix("http://") ?? false || url?.hasPrefix("https://") ?? false) { return true }
+        return false
+    }
+
     func richEditorToolbarInsertLink(_ toolbar: RichEditorToolbar) {
         let alertController = UIAlertController(title: "Enter link and text", message: "You can leave the text empty to only show a clickable link", preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "Insert", style: .default) { (_) in
