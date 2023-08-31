@@ -620,6 +620,11 @@ public class RichEditorWebView: WKWebView {
                 self.delegate?.richEditor?(self, handle: action)
             }
         }
+        else {
+              if let delegate = delegate{
+                  delegate.richEditor?(self, handle:method)
+              }
+        }
     }
     
     // MARK: - Responder Handling
