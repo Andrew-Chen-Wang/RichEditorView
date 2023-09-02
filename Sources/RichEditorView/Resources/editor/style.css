@@ -65,7 +65,7 @@ div {
     height: 100%;
     overflow: auto;
     display: block;
-    font-size: 12pt;
+    font-size: 32pt;
 }
 
 input[type=checkbox] {
