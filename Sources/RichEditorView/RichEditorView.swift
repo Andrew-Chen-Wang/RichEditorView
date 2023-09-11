@@ -423,7 +423,7 @@ public class RichEditorWebView: WKWebView {
         webView.evaluateJavaScript(js) {(result, error) in
             if let error = error {
                 print("WKWebViewJavascriptBridge Error: \(String(describing: error)) - JS: \(js)")
-                handler?("")
+                handler?("WKWebViewJavascriptBridge Error: \(String(describing: error)) - JS: \(js)")
                 return
             }
             
