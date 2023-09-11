@@ -423,7 +423,7 @@ public class RichEditorWebView: WKWebView {
         webView.evaluateJavaScript(js) {(result, error) in
             if let error = error {
                 print("WKWebViewJavascriptBridge Error: \(String(describing: error)) - JS: \(js)")
-                handler?("")
+                handler?("WKWebViewJavascriptBridge Error: \(String(describing: error)) - JS: \(js)")
                 return
             }
             
@@ -619,6 +619,11 @@ public class RichEditorWebView: WKWebView {
                 
                 self.delegate?.richEditor?(self, handle: action)
             }
+        }
+        else {
+              if let delegate = delegate{
+                  delegate.richEditor?(self, handle:method)
+              }
         }
     }
     
